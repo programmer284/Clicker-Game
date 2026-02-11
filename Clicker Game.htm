@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="./Scripts+Styles/style.css" />
+<script>
+const version='0.7.5';
+
+window.addEventListener('load',()=>{
+	setTimeout(()=>{
+		/*
+		for(let el of document.getElementsByName('vers')){
+			el.innerHTML=version;
+		}
+		*/
+		document.head.innerHTML+='<title>Clicker Game '/*+version*/+'</title>'
+		document.getElementById('ChVers').innerHTML=version;
+	},10);
+});
+</script>
+</head>
+<body>
+<header>
+<h1>Clicker Game <span name="vers"></span></h1>
+</header>
+<main id="MainBody">
+<h2><p><span style="color:gold" >Gold:</span>&nbsp;<span id="GoldCount" ></span></p></h2>
+<span id="dispGB">
+<h2><p><span style="color:#00dd00" >Storage:</span>&nbsp;<span id="amountStorage" ></span>&nbsp;/&nbsp;<span id="maxStorage"></span>&nbsp;Gold&nbsp;&nbsp;<progress id="portion" value="0" max="1000" ></progress></p></h2>
+<hr />
+<p><button class="btn" id="bt" onclick="javascript:grind();update()" ><span style="font-size:40pt" >&#9935;&nbsp;Grind.&nbsp;&#9935;</span></button></p>
+<hr />
+<p>
+<button onclick="javascript:stReq()" >Store</button><input type="number" value="1" min="0" max="1000" id="AmountToStore" />&nbsp;&nbsp;<button onclick="javascript:stAll()" >Store Max.</button>&nbsp;<span id="SCooldown" ></span>
+</p><p>
+<button onclick="javascript:wdReq()" >Withdraw</button><input type="number" value="1" min="0" max="1000" id="AmountToWithdraw" />&nbsp;&nbsp;<button onclick="javascript:wdAll()" >Withdraw All.</button>&nbsp;<span id="WCooldown" ></span>
+</p>
+<hr />
+<h3><u>Gold-Upgrades</u></h3>
+<p><button onclick="javascript:upgc();update()" >&uArr;&nbsp;Upgrade Gold per Click.</button>&nbsp;<span id="gpc" ></span>&nbsp;Gold/Click&nbsp;&nbsp;Price:<span id="prgpc" ></span></p>
+<p><button onclick="javascript:upgs();update()" >&uArr;&nbsp;Upgrade Gold per sec.</button>&nbsp;<span id="gps" ></span>&nbsp;Gold/sec.&nbsp;&nbsp;Price:<span id="prgps" ></span></p>
+<hr />
+<h3><u>Storage-Upgrades</u></h3>
+<p><button onclick="javascript:upsc();update()" >&uArr;&nbsp;Upgrade Storage capacity.</button>&nbsp;&nbsp;Price:<span id="prsc" ></span></p>
+<hr />
+<p id="AU" ><button onclick="javascript:acau();update()" >Unlock Auto-Upgrader</button>&nbsp;Price:10000</p>
+<hr />
+<p>
+<button onclick="javascript:acgb();update()">Activate Gold Rush!</button><br />
+<p>Requires:<br />
+&nbsp;&bull;&nbsp;Unlocked Auto-Upgrader<br />
+&nbsp;&bull;&nbsp;Both Auto-Upgrades turned off (Untick both checkboxes.)<br />
+&nbsp;&bull;&nbsp;At least 1e+100 Gold<br />
+</p>
+<p><pre>
+Information:
+Gold will be generated very rapid.
+You won't need to upgrade anything or to grind the gold.
+</pre></p>
+</p>
+</span>
+<span id="prbt">
+<hr />
+<p>
+<h3><u>Logs (newest will be shown at top)</u></h3>
+<iframe id="LogFrame" height="200px" width="50%">
+<html>
+<head>
+</head>
+<body>
+</body>
+</html>
+</iframe><br />
+<button onclick="javascript:Logs.clr()" >Clear Logs</button>
+</p>
+<hr />
+<p><input id="InpGameCode" type="text" placeholder="Enter Game Code" width="50%" /><button id="LoadGameBtn">Load Game</button><br />
+<button id="CopyGCBtn">Copy Game Code</button><span id="DispCopy"></span></p>
+<hr />
+<p><button onclick="javascript:if(confirm('Are you sure to reset the game?')){resetGame()}">Reset Game</button>&nbsp;&nbsp;
+<button onclick="javascript:printStats()">Print Stats</button></p>
+</span>
+</main>
+<footer>
+<p><a href="./Other_Sites/Changelogs.html" target="_blank" >Changelogs - <span id="ChVers"></span></a></p>
+<p><a href="./Other_Sites/ComingSoon.html" target="_blank" >Coming Soon</a></p>
+<p>Made by Dang Hoang Bach</p>
+<!--
+-->
+<script src="./Scripts+Styles/main.js" ></script>
+<script>
+//Print
+function printStats(){
+	let PrintWindow=open();
+	PrintWindow.document.head.innerHTML+='<title>Print Stats | Clicker Game '+version+'</title>';
+	PrintWindow.document.body.innerHTML+='<h1>Clicker Game </h1>'
+	PrintWindow.document.body.innerHTML+='<h3><p><span style="color:gold" >Gold:</span> '+Math.floor(gold)+'</p></h3>';
+	if(GoldRush){
+		PrintWindow.document.body.innerHTML+='<hr /><div style="color:gold;font-size:100pt">!!!Gold Rush!!!</div>';
+	}else{
+		PrintWindow.document.body.innerHTML+='<h3><p><span style="color:#00dd00" >Storage:</span> '+Math.floor(CurrStore)+' / '+Math.floor(MaxStore)+'&nbsp;&nbsp;<progress value="'+Math.floor(CurrStore)+'" max="'+Math.floor(MaxStore)+'" ></progress></p></h3><hr />'
+		PrintWindow.document.body.innerHTML+='<p>Gold per Click: '+Math.floor(RateClicks)+'<br />Gold per sec: '+Math.floor(RateSec)+'<p><hr />';
+		PrintWindow.document.body.innerHTML+='<p>Auto-Upgrader: '+AutoUpg+'</p>';
+	}
+	PrintWindow.print();
+	PrintWindow.close();
+}
+</script>
+</footer>
+</body>
+</html>
